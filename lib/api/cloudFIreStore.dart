@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:my_firebase_app/model/character.dart';
 
 class CloudFireStore {
   final Firestore _db = Firestore.instance;
@@ -32,5 +33,16 @@ class CloudFireStore {
 
   Future<void> updateDocument(Map map, String id) {
     return ref.document(id).updateData(map);
+  }
+
+  //TODO generalize
+  Future<void> upddateDocumentAsTransaction(Character character) async {
+    await _db.runTransaction((transaction) async {
+      final freshSNapshot = await transaction.get(character.reference);
+      final fresh = Character.fromSnapshot(freshSNapshot);
+      await transaction
+          .update(character.reference, {'rating': fresh.rating + 1});
+    });
+    return;
   }
 }
