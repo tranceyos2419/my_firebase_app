@@ -10,7 +10,7 @@ class CharacterListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Character List'),
+        title: Text('My Wife List'),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {

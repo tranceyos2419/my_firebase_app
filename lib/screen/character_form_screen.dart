@@ -10,7 +10,7 @@ class CharacterFormScreen extends StatefulWidget {
 }
 
 class _CharacterFormScreenState extends State<CharacterFormScreen> {
-  String _appBarTitle = 'App Form';
+  String _appBarTitle = 'Form of your Wife';
   final _form = GlobalKey<FormState>();
   final _imgFocusNode = FocusNode();
   final _ratingFocusNode = FocusNode();
@@ -85,15 +85,30 @@ class _CharacterFormScreenState extends State<CharacterFormScreen> {
   }
 
   Widget buildCenter() {
+    final double _iconSize = 34.0;
+    final double _sizedBoxHeight = 28.0;
     return Container(
-      padding: EdgeInsets.all(12.0),
+      alignment: Alignment.center,
+      padding: EdgeInsets.symmetric(horizontal: 12.0),
       child: Form(
         key: _form,
         child: SingleChildScrollView(
             child: Column(
           children: <Widget>[
+            Text(
+              'Who is your wife?',
+              style: TextStyle(fontSize: 24),
+            ),
+            SizedBox(height: _sizedBoxHeight),
             TextFormField(
-              decoration: InputDecoration(labelText: 'Name'),
+              decoration: InputDecoration(
+                labelText: 'Name',
+                fillColor: Colors.white,
+                icon: Icon(
+                  Icons.person,
+                  size: _iconSize,
+                ),
+              ),
               textInputAction: TextInputAction.next,
               keyboardType: TextInputType.text,
               onFieldSubmitted: (_) {
@@ -111,8 +126,14 @@ class _CharacterFormScreenState extends State<CharacterFormScreen> {
                     rating: _character.rating);
               },
             ),
+            SizedBox(height: _sizedBoxHeight),
             TextFormField(
-              decoration: InputDecoration(labelText: 'Img'),
+              decoration: InputDecoration(
+                  labelText: 'Img',
+                  icon: Icon(
+                    Icons.image,
+                    size: _iconSize,
+                  )),
               textInputAction: TextInputAction.next,
               keyboardType: TextInputType.url,
               onFieldSubmitted: (_) {
@@ -131,8 +152,14 @@ class _CharacterFormScreenState extends State<CharacterFormScreen> {
                     rating: _character.rating);
               },
             ),
+            SizedBox(height: _sizedBoxHeight),
             TextFormField(
-              decoration: InputDecoration(labelText: 'Rating'),
+              decoration: InputDecoration(
+                  labelText: 'Rating',
+                  icon: Icon(
+                    Icons.star,
+                    size: _iconSize,
+                  )),
               keyboardType: TextInputType.number,
               textInputAction: TextInputAction.done,
               validator: (value) {
@@ -150,6 +177,7 @@ class _CharacterFormScreenState extends State<CharacterFormScreen> {
                     rating: int.parse(value));
               },
             ),
+            SizedBox(height: _sizedBoxHeight),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
