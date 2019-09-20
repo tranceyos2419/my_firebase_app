@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:my_firebase_app/model/character.dart';
 import 'package:my_firebase_app/provider/characters.dart';
+import 'package:my_firebase_app/screen/character_form_screen.dart';
 import 'package:provider/provider.dart';
 
 class CharacterListScreen extends StatelessWidget {
@@ -12,7 +13,10 @@ class CharacterListScreen extends StatelessWidget {
         title: Text('Character List'),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).pushNamed(CharacterFormScreen.routeName,
+              arguments: {'appBarTitle': 'Register your wife'});
+        },
         child: Icon(
           Icons.add,
         ),

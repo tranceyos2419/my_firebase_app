@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_firebase_app/provider/characters.dart';
+import 'package:my_firebase_app/screen/character_form_screen.dart';
 import 'package:my_firebase_app/screen/router.dart';
 import 'package:provider/provider.dart';
 
@@ -15,11 +16,12 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: MaterialApp(
-        title: 'Character App',
+        title: 'My Wife App',
         debugShowCheckedModeBanner: false,
         theme:
-            ThemeData(primaryColor: Colors.purple, accentColor: Colors.yellow),
+            ThemeData(primaryColor: Colors.purple, accentColor: Colors.amber),
         initialRoute: '/',
+        // initialRoute: CharacterFormScreen.routeName,
         onGenerateRoute: Router.generateRoute,
       ),
     );

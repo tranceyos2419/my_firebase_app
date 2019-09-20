@@ -6,7 +6,7 @@ class Character {
   final int rating;
   final DocumentReference reference;
 
-  Character(this.name, this.img, this.rating, this.reference);
+  Character({this.name, this.img, this.rating, this.reference});
 
   Character.fromMap(Map<String, dynamic> map, {this.reference})
       : assert(map['name'] != null),
