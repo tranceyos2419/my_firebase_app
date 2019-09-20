@@ -72,15 +72,38 @@ class CharacterListScreen extends StatelessWidget {
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
         child: Column(
           children: <Widget>[
-            Container(
-              height: MediaQuery.of(context).size.height * 0.6,
-              child: ClipRRect(
-                borderRadius: BorderRadius.vertical(top: Radius.circular(18)),
-                child: Image.network(
-                  character.img,
-                  fit: BoxFit.cover,
+            Stack(
+              children: <Widget>[
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.6,
+                  child: ClipRRect(
+                    borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(18)),
+                    child: Image.network(
+                      character.img,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
-              ),
+                Positioned(
+                    bottom: 20,
+                    right: 20,
+                    child: InkResponse(
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, CharacterFormScreen.routeName,
+                            arguments: {'edit': true, 'character': character});
+                      },
+                      child: Container(
+                          width: 50,
+                          height: 50,
+                          decoration: new BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(Icons.edit)),
+                    ))
+              ],
             ),
             Container(
               padding: EdgeInsets.all(6.0),
@@ -107,5 +130,29 @@ class CharacterListScreen extends StatelessWidget {
     }
     return Row(
         mainAxisAlignment: MainAxisAlignment.center, children: starIconList);
+  }
+}
+
+class CircleButton extends StatelessWidget {
+  final GestureTapCallback onTap;
+  final Icon icon;
+  final double size;
+
+  const CircleButton({Key key, this.onTap, this.icon, this.size})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return new InkResponse(
+      onTap: onTap,
+      child: new Container(
+          width: size,
+          height: size,
+          decoration: new BoxDecoration(
+            color: Colors.white,
+            shape: BoxShape.circle,
+          ),
+          child: icon),
+    );
   }
 }

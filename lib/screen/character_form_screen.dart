@@ -22,10 +22,11 @@ class _CharacterFormScreenState extends State<CharacterFormScreen> {
   @override
   void didChangeDependencies() {
     if (_isInit) {
-      //TODO Fix getting arguments from route;
-      // final args =
-      //     ModalRoute.of(context).settings.arguments as Map<String, String>;
-      // _appBarTitle = args['appBarTitle'];
+      final args =
+          ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+      if (args['edit'] != null && args['edit']) {
+        _character = args['character'];
+      }
     }
     _isInit = false;
 
@@ -72,6 +73,9 @@ class _CharacterFormScreenState extends State<CharacterFormScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // final args =
+    // ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
+    // print(args);
     return Scaffold(
       appBar: AppBar(
         title: Text('$_appBarTitle'),
@@ -101,6 +105,7 @@ class _CharacterFormScreenState extends State<CharacterFormScreen> {
             ),
             SizedBox(height: _sizedBoxHeight),
             TextFormField(
+              initialValue: _character.name,
               decoration: InputDecoration(
                 labelText: 'Name',
                 fillColor: Colors.white,
@@ -128,6 +133,7 @@ class _CharacterFormScreenState extends State<CharacterFormScreen> {
             ),
             SizedBox(height: _sizedBoxHeight),
             TextFormField(
+              initialValue: _character.img,
               decoration: InputDecoration(
                   labelText: 'Img',
                   icon: Icon(
@@ -154,6 +160,7 @@ class _CharacterFormScreenState extends State<CharacterFormScreen> {
             ),
             SizedBox(height: _sizedBoxHeight),
             TextFormField(
+              initialValue: _character.rating.toString(),
               decoration: InputDecoration(
                   labelText: 'Rating',
                   icon: Icon(
