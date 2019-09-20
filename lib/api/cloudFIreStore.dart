@@ -16,7 +16,7 @@ class CloudFireStore {
   }
 
   Stream<QuerySnapshot> stramDataCollection() {
-    return ref.snapshots();
+    return ref.orderBy('rating', descending: true).snapshots();
   }
 
   Future<DocumentSnapshot> getDocumentById(String id) {
