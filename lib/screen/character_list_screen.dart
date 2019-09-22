@@ -87,7 +87,7 @@ class CharacterListScreen extends StatelessWidget {
                 ),
                 Positioned(
                     bottom: 20,
-                    right: 20,
+                    left: 20,
                     child: InkResponse(
                       onTap: () {
                         Navigator.pushNamed(
@@ -102,7 +102,24 @@ class CharacterListScreen extends StatelessWidget {
                             shape: BoxShape.circle,
                           ),
                           child: Icon(Icons.edit)),
-                    ))
+                    )),
+                Positioned(
+                    bottom: 20,
+                    right: 20,
+                    child: InkResponse(
+                      onTap: () async {
+                        await Provider.of<Characters>(context)
+                            .deleteCharacter(character);
+                      },
+                      child: Container(
+                          width: 50,
+                          height: 50,
+                          decoration: new BoxDecoration(
+                            color: Colors.white,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Icon(Icons.delete)),
+                    )),
               ],
             ),
             Container(

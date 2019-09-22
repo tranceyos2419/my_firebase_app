@@ -23,7 +23,7 @@ class CloudFireStore {
     return ref.document(id).get();
   }
 
-  Future<void> removeDocument(String id) {
+  Future<void> removeDocumentById(String id) {
     return ref.document(id).delete();
   }
 

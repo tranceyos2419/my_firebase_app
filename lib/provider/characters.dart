@@ -29,14 +29,17 @@ class Characters with ChangeNotifier {
     return Character.fromSnapshot(doc);
   }
 
-  Future removeCharacterById(String id) async {
-    await _api.removeDocument(id);
+  Future deleteCharacter(Character character) async {
+    await _api.removeDocumentById(character.reference.documentID);
+    // await character.reference.delete();
+
     return;
   }
 
   Future updateChracter(Character character) async {
     await _api.updateDocument(
         character.toJson(), character.reference.documentID);
+    // await character.reference.updateData(character.toJson());
     return;
   }
 
