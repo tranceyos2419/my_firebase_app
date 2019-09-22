@@ -34,18 +34,31 @@ class Characters with ChangeNotifier {
     return;
   }
 
-  Future updateChracter(Character character, String id) async {
-    await _api.updateDocument(character.toJson(), id);
+  Future updateChracter(Character character) async {
+    await _api.updateDocument(
+        character.toJson(), character.reference.documentID);
     return;
   }
 
   Future incrementRating(Character character) async {
-    await _api.upddateDocumentAsTransaction(character);
+    // await _api.upddateDocumentAsTransaction(character);
     return;
   }
 
   Future addCharacter(Character character) async {
     await _api.addDocument(character.toJson());
+    return;
+  }
+
+  Future updateCharacterAsTransaction(Character character) async {
+    //! callback doesn't work
+    // _callback(Transaction transaction) async {
+    //   final freshSNapshot = await transaction.get(character.reference);
+    //   final fresh = Character.fromSnapshot(freshSNapshot);
+    //   final json = fresh.toJson();
+    //   await transaction.update(character.reference, json);
+    // }
+    await _api.upddateDocumentAsTransaction(null, character);
     return;
   }
 }

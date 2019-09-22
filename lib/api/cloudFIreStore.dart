@@ -36,12 +36,15 @@ class CloudFireStore {
   }
 
   //TODO generalize
-  Future<void> upddateDocumentAsTransaction(Character character) async {
+  Future<void> upddateDocumentAsTransaction(
+      Function callback, Character character) async {
     await _db.runTransaction((transaction) async {
-      final freshSNapshot = await transaction.get(character.reference);
-      final fresh = Character.fromSnapshot(freshSNapshot);
-      await transaction
-          .update(character.reference, {'rating': fresh.rating + 1});
+      // await callback(transaction);
+      // final freshSNapshot = await transaction.get(character.reference);
+      // final fresh = Character.fromSnapshot(freshSNapshot);
+      // final json = fresh.toJson();
+      final json = character.toJson();
+      await transaction.update(character.reference, json);
     });
     return;
   }

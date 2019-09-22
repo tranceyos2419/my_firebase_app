@@ -16,6 +16,7 @@ class _CharacterFormScreenState extends State<CharacterFormScreen> {
   final _ratingFocusNode = FocusNode();
   var _isInit = true;
   var _isLoading = false;
+  var _isEdit = false;
   Character _character = new Character();
   // Character _character;
 
@@ -26,6 +27,7 @@ class _CharacterFormScreenState extends State<CharacterFormScreen> {
           ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
       if (args['edit'] != null && args['edit']) {
         _character = args['character'];
+        _isEdit = args['edit'];
       }
     }
     _isInit = false;
@@ -44,8 +46,14 @@ class _CharacterFormScreenState extends State<CharacterFormScreen> {
       _isLoading = true;
     });
     try {
-      await Provider.of<Characters>(context, listen: false)
-          .addCharacter(_character);
+      if (_isEdit) {
+        // await Provider.of<Characters>(context, listen: false)
+        // .updateCharacterAsTransaction(_character);
+        await Provider.of<Characters>(context).updateChracter(_character);
+      } else {
+        await Provider.of<Characters>(context, listen: false)
+            .addCharacter(_character);
+      }
     } catch (e) {
       //TODO better error handling
       print('error: $e');
@@ -73,9 +81,6 @@ class _CharacterFormScreenState extends State<CharacterFormScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final args =
-    // ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
-    // print(args);
     return Scaffold(
       appBar: AppBar(
         title: Text('$_appBarTitle'),
@@ -128,7 +133,8 @@ class _CharacterFormScreenState extends State<CharacterFormScreen> {
                 _character = Character(
                     name: value,
                     img: _character.img,
-                    rating: _character.rating);
+                    rating: _character.rating,
+                    reference: _character.reference);
               },
             ),
             SizedBox(height: _sizedBoxHeight),
@@ -151,11 +157,11 @@ class _CharacterFormScreenState extends State<CharacterFormScreen> {
                 }
               },
               onSaved: (value) {
-                print(value);
                 _character = Character(
                     name: _character.name,
                     img: value,
-                    rating: _character.rating);
+                    rating: _character.rating,
+                    reference: _character.reference);
               },
             ),
             SizedBox(height: _sizedBoxHeight),
@@ -181,7 +187,8 @@ class _CharacterFormScreenState extends State<CharacterFormScreen> {
                 _character = Character(
                     name: _character.name,
                     img: _character.img,
-                    rating: int.parse(value));
+                    rating: int.parse(value),
+                    reference: _character.reference);
               },
             ),
             SizedBox(height: _sizedBoxHeight),
