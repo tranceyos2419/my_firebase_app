@@ -4,7 +4,6 @@ import 'package:my_firebase_app/provider/characters.dart';
 import 'package:my_firebase_app/screen/auth_screen.dart';
 import 'package:my_firebase_app/screen/character_form_screen.dart';
 import 'package:my_firebase_app/screen/character_list_screen.dart';
-import 'package:my_firebase_app/screen/router.dart';
 import 'package:provider/provider.dart';
 
 void main() => runApp(MyApp());

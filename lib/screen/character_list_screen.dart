@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:my_firebase_app/model/character.dart';
+import 'package:my_firebase_app/model/user.dart';
+import 'package:my_firebase_app/provider/auth.dart';
 import 'package:my_firebase_app/provider/characters.dart';
 import 'package:my_firebase_app/screen/character_form_screen.dart';
 import 'package:provider/provider.dart';
@@ -8,9 +10,31 @@ import 'package:provider/provider.dart';
 class CharacterListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    User user = Provider.of<Auth>(context).user;
+    print(user);
     return Scaffold(
       appBar: AppBar(
         title: Text('My Wife List'),
+        actions: <Widget>[
+          GestureDetector(
+            onTap: () {
+              Provider.of<Auth>(context).signOut();
+            },
+            child: Container(
+              margin: EdgeInsets.only(right: 10.0),
+              child: CircleAvatar(
+                radius: 20,
+                child: ClipRRect(
+                  borderRadius: new BorderRadius.circular(30.0),
+                  child: Image.network(
+                    user.photoUrl,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
