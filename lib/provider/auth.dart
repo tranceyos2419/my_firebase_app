@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:my_firebase_app/api/cloudFIreStore.dart';
 import 'package:my_firebase_app/model/user.dart';
 
 class Auth with ChangeNotifier {
@@ -8,6 +9,7 @@ class Auth with ChangeNotifier {
   User _user;
 
   //* Initialization
+  CloudFireStore _api = CloudFireStore('users');
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = new GoogleSignIn();
 
@@ -46,9 +48,17 @@ class Auth with ChangeNotifier {
         displayName: _firebaseUser.displayName,
         lastSeen: new DateTime.now());
 
+    await _updateUser(
+      _user,
+    );
+
     _auth = true;
     notifyListeners();
     return _firebaseUser;
+  }
+
+  Future _updateUser(User user) async {
+    await _api.setDocument(user.toJson(), user.uid);
   }
 
   void signOut() {

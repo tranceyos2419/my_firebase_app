@@ -35,6 +35,10 @@ class CloudFireStore {
     return ref.document(id).updateData(map);
   }
 
+  Future<void> setDocument(Map map, String id) {
+    return ref.document(id).setData(map);
+  }
+
   //TODO generalize
   Future<void> upddateDocumentAsTransaction(
       Function callback, Character character) async {

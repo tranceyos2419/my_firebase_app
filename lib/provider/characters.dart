@@ -6,7 +6,7 @@ import 'package:my_firebase_app/api/cloudFIreStore.dart';
 import 'package:my_firebase_app/model/character.dart';
 
 class Characters with ChangeNotifier {
-  CloudFireStore _api = CloudFireStore('character');
+  CloudFireStore _api = CloudFireStore('characters');
 
   List<Character> _items;
 
