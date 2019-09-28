@@ -33,7 +33,7 @@ class AuthScreen extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                         borderRadius: new BorderRadius.circular(30.0)),
                     onPressed: () async {
-                      await Provider.of<Auth>(context).googleSignIn();
+                      // await Provider.of<Auth>(context).googleSignIn();
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,

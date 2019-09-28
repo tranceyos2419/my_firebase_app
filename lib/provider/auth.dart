@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:my_firebase_app/api/cloudFIreStore.dart';
 import 'package:my_firebase_app/model/user.dart';
@@ -48,7 +49,7 @@ class Auth with ChangeNotifier {
         displayName: _firebaseUser.displayName,
         lastSeen: new DateTime.now());
 
-    await _updateUser(
+    await updateUser(
       _user,
     );
 
@@ -57,7 +58,23 @@ class Auth with ChangeNotifier {
     return _firebaseUser;
   }
 
-  Future _updateUser(User user) async {
+  Future<void> initiateFacebookLogin() async {
+    var facebookLogin = FacebookLogin();
+    var facebookLoginResult = await facebookLogin.logIn(['email']);
+    switch (facebookLoginResult.status) {
+      case FacebookLoginStatus.error:
+        print("Error");
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        print("CancelledByUser");
+        break;
+      case FacebookLoginStatus.loggedIn:
+        print("LoggedIn");
+        break;
+    }
+  }
+
+  Future updateUser(User user) async {
     await _api.setDocument(user.toJson(), user.uid);
   }
 
