@@ -13,6 +13,7 @@ class Auth with ChangeNotifier {
   CloudFireStore _api = CloudFireStore('users');
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = new GoogleSignIn();
+  final FacebookLogin _facebookLogin = FacebookLogin();
 
   bool get isAuth {
     return _auth;
@@ -26,7 +27,7 @@ class Auth with ChangeNotifier {
     }
   }
 
-  Future<FirebaseUser> googleSignIn() async {
+  Future<void> googleSignIn() async {
     // Step 1
     GoogleSignInAccount googleUser = await _googleSignIn.signIn();
 
@@ -38,6 +39,27 @@ class Auth with ChangeNotifier {
         accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
 
     //* sign in user with credential and update firebase credential
+    await oauthSignIn(credential);
+  }
+
+  Future<void> facebookLogin() async {
+    var facebookLoginResult = await _facebookLogin.logIn(['email']);
+    switch (facebookLoginResult.status) {
+      case FacebookLoginStatus.error:
+        print("Error");
+        break;
+      case FacebookLoginStatus.cancelledByUser:
+        print("CancelledByUser");
+        break;
+      case FacebookLoginStatus.loggedIn:
+        AuthCredential credential = FacebookAuthProvider.getCredential(
+            accessToken: facebookLoginResult.accessToken.token);
+        oauthSignIn(credential);
+        break;
+    }
+  }
+
+  Future<void> oauthSignIn(AuthCredential credential) async {
     FirebaseUser _firebaseUser = await _firebaseAuth
         .signInWithCredential(credential)
         .then((result) => result.user);
@@ -49,37 +71,14 @@ class Auth with ChangeNotifier {
         displayName: _firebaseUser.displayName,
         lastSeen: new DateTime.now());
 
-    await updateUser(
-      _user,
-    );
+    await _api.setDocument(_user.toJson(), _user.uid);
 
     _auth = true;
     notifyListeners();
-    return _firebaseUser;
   }
 
-  Future<void> initiateFacebookLogin() async {
-    var facebookLogin = FacebookLogin();
-    var facebookLoginResult = await facebookLogin.logIn(['email']);
-    switch (facebookLoginResult.status) {
-      case FacebookLoginStatus.error:
-        print("Error");
-        break;
-      case FacebookLoginStatus.cancelledByUser:
-        print("CancelledByUser");
-        break;
-      case FacebookLoginStatus.loggedIn:
-        print("LoggedIn");
-        break;
-    }
-  }
-
-  Future updateUser(User user) async {
-    await _api.setDocument(user.toJson(), user.uid);
-  }
-
-  void signOut() {
-    _firebaseAuth.signOut();
+  Future<void> signOut() async {
+    await _firebaseAuth.signOut();
     _user = null;
     _auth = false;
     notifyListeners();
