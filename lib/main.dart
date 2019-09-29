@@ -27,9 +27,6 @@ class MyApp extends StatelessWidget {
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
                   primaryColor: Colors.purple, accentColor: Colors.amber),
-              // initialRoute: '/',
-              // initialRoute: CharacterFormScreen.routeName,
-              // onGenerateRoute: Router.generateRoute,
               home: auth.isAuth ? CharacterListScreen() : AuthScreen(),
               routes: {
                 // '/': (context) => CharacterListScreen(),
