@@ -25,31 +25,26 @@ class AuthScreen extends StatelessWidget {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Container(
-                  alignment: Alignment.center,
-                  width: 250.0,
-                  child: RaisedButton(
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(30.0)),
-                    onPressed: () async {
-                      // await Provider.of<Auth>(context).googleSignIn();
-                    },
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          FontAwesomeIcons.google,
-                          color: Colors.orange,
-                        ),
-                        SizedBox(
-                          width: 10.0,
-                        ),
-                        Text('Sign In with Google')
-                      ],
+                buildSignIn(
+                    context: context,
+                    title: 'Sign In with Google',
+                    icon: Icon(
+                      FontAwesomeIcons.google,
+                      color: Colors.orange,
                     ),
-                  ),
-                )
+                    onPressed: () async {
+                      await Provider.of<Auth>(context).googleSignIn();
+                    }),
+                buildSignIn(
+                    context: context,
+                    title: 'Sign In with Facebook',
+                    icon: Icon(
+                      FontAwesomeIcons.facebook,
+                      color: Colors.blue,
+                    ),
+                    onPressed: () async {
+                      await Provider.of<Auth>(context).facebookLogin();
+                    }),
               ],
             )
           ],
@@ -59,44 +54,26 @@ class AuthScreen extends StatelessWidget {
   }
 }
 
-// return Scaffold(
-//   body: Builder(
-//     builder: (context) => Stack(
-//       fit: StackFit.expand,
-//       children: <Widget>[
-//         Container(
-//           width: MediaQuery.of(context).size.width,
-//           height: MediaQuery.of(context).size.height,
-//           child: Image.network(
-//               'https://images.unsplash.com/photo-1518050947974-4be8c7469f0c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
-//               fit: BoxFit.fill,
-//               color: Color.fromRGBO(255, 255, 255, 0.6),
-//               colorBlendMode: BlendMode.modulate),
-//         ),
-//         Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//             SizedBox(height: 10.0),
-//             Container(
-//                 width: 250.0,
-//                 child: Align(
-//                   alignment: Alignment.center,
-//                   child: RaisedButton(
-//                     shape: RoundedRectangleBorder(
-//                         borderRadius: new BorderRadius.circular(30.0)),
-//                     color: Color(0xffffffff),
-//                     child: Row(
-//                       mainAxisAlignment: MainAxisAlignment.start,
-//                       children: <Widget>[
-//                         Icon(
-//                           FontAwesomeIcons.google,
-//                           color: Color(0xffCE107C),
-//                         ),
-//                         SizedBox(width: 10.0),
-//                         Text(
-//                           'Sign in with Google',
-//                           style: TextStyle(
-//                               color: Colors.black, fontSize: 18.0),
-//                         ),
-//                       ],
-//                     ),
+Widget buildSignIn(
+    {BuildContext context, String title, Icon icon, Function onPressed}) {
+  return Container(
+    alignment: Alignment.center,
+    width: 250.0,
+    child: RaisedButton(
+      color: Colors.white,
+      shape:
+          RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+      onPressed: onPressed,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          icon,
+          SizedBox(
+            width: 10.0,
+          ),
+          Text(title)
+        ],
+      ),
+    ),
+  );
+}

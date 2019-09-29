@@ -17,8 +17,8 @@ class CharacterListScreen extends StatelessWidget {
         title: Text('My Wife List'),
         actions: <Widget>[
           GestureDetector(
-            onTap: () {
-              Provider.of<Auth>(context).signOut();
+            onTap: () async {
+              await Provider.of<Auth>(context).signOut();
             },
             child: Container(
               margin: EdgeInsets.only(right: 10.0),
