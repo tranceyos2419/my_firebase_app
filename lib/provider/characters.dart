@@ -58,7 +58,9 @@ class Characters with ChangeNotifier {
   Future addCharacter(Character character) async {
     StorageUploadTask _uploadTask;
     File file = await getImageFromNetwork(character.img);
-    final String filePath = 'characters/${character.name}.png';
+    DocumentReference ref = await _api.addDocument(character.toJson());
+
+    final String filePath = 'characters/${ref.documentID}.png';
     _uploadTask = _storage.ref().child(filePath).putFile(file);
     try {
       StorageTaskSnapshot taskSnapshot = await _uploadTask.onComplete;
@@ -68,7 +70,7 @@ class Characters with ChangeNotifier {
           img: downloadUrl,
           rating: character.rating,
           reference: character.reference);
-      await _api.addDocument(character.toJson());
+      await _api.updateDocument(character.toJson(), ref.documentID);
     } catch (e) {
       throw e;
     }
