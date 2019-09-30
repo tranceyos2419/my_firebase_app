@@ -1,12 +1,19 @@
 import 'dart:core';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:my_firebase_app/api/cloudFIreStore.dart';
 import 'package:my_firebase_app/model/character.dart';
 
 class Characters with ChangeNotifier {
   CloudFireStore _api = CloudFireStore('characters');
+  final FirebaseStorage _storage =
+      FirebaseStorage(storageBucket: 'gs://my-firebase-app-c159a.appspot.com/');
+  final String filePath = 'images/${DateTime.now()}.png';
+  StorageUploadTask _uploadTask;
 
   List<Character> _items;
 
@@ -49,8 +56,28 @@ class Characters with ChangeNotifier {
   }
 
   Future addCharacter(Character character) async {
-    await _api.addDocument(character.toJson());
+    StorageUploadTask _uploadTask;
+    File file = await getImageFromNetwork(character.img);
+    final String filePath = 'characters/${character.name}.png';
+    _uploadTask = _storage.ref().child(filePath).putFile(file);
+    try {
+      StorageTaskSnapshot taskSnapshot = await _uploadTask.onComplete;
+      String downloadUrl = await taskSnapshot.ref.getDownloadURL();
+      character = Character(
+          name: character.name,
+          img: downloadUrl,
+          rating: character.rating,
+          reference: character.reference);
+      await _api.addDocument(character.toJson());
+    } catch (e) {
+      throw e;
+    }
     return;
+  }
+
+  Future<File> getImageFromNetwork(String url) async {
+    File file = await DefaultCacheManager().getSingleFile(url);
+    return file;
   }
 
   Future updateCharacterAsTransaction(Character character) async {
