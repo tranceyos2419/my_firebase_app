@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_firebase_app/model/character.dart';
+import 'package:my_firebase_app/provider/auth.dart';
 import 'package:my_firebase_app/provider/characters.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +19,6 @@ class _CharacterFormScreenState extends State<CharacterFormScreen> {
   var _isLoading = false;
   var _isEdit = false;
   Character _character = new Character();
-  // Character _character;
 
   @override
   void didChangeDependencies() {
@@ -46,6 +46,14 @@ class _CharacterFormScreenState extends State<CharacterFormScreen> {
       _isLoading = true;
     });
     try {
+      if (_character.uid == null) {
+        _character = Character(
+            name: _character.name,
+            img: _character.img,
+            rating: _character.rating,
+            uid: Provider.of<Auth>(context).user.uid,
+            reference: _character.reference);
+      }
       if (_isEdit) {
         // await Provider.of<Characters>(context, listen: false)
         // .updateCharacterAsTransaction(_character);
@@ -134,6 +142,7 @@ class _CharacterFormScreenState extends State<CharacterFormScreen> {
                     name: value,
                     img: _character.img,
                     rating: _character.rating,
+                    uid: _character.uid,
                     reference: _character.reference);
               },
             ),
@@ -161,6 +170,7 @@ class _CharacterFormScreenState extends State<CharacterFormScreen> {
                     name: _character.name,
                     img: value,
                     rating: _character.rating,
+                    uid: _character.uid,
                     reference: _character.reference);
               },
             ),
@@ -187,6 +197,7 @@ class _CharacterFormScreenState extends State<CharacterFormScreen> {
                 _character = Character(
                     name: _character.name,
                     img: _character.img,
+                    uid: _character.uid,
                     rating: int.parse(value),
                     reference: _character.reference);
               },
