@@ -166,7 +166,7 @@ class _CharacterFormScreenState extends State<CharacterFormScreen> {
             ),
             SizedBox(height: _sizedBoxHeight),
             TextFormField(
-              initialValue: _character.rating.toString(),
+              initialValue: '',
               decoration: InputDecoration(
                   labelText: 'Rating',
                   icon: Icon(
