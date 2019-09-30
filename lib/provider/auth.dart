@@ -10,7 +10,7 @@ class Auth with ChangeNotifier {
   User _user;
 
   //* Initialization
-  CloudFireStore _api = CloudFireStore('users');
+  CloudFireStore _store = CloudFireStore('users');
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = new GoogleSignIn();
   final FacebookLogin _facebookLogin = FacebookLogin();
@@ -71,7 +71,7 @@ class Auth with ChangeNotifier {
         displayName: _firebaseUser.displayName,
         lastSeen: new DateTime.now());
 
-    await _api.setDocument(_user.toJson(), _user.uid);
+    await _store.setDocument(_user.toJson(), _user.uid);
 
     _auth = true;
     notifyListeners();
