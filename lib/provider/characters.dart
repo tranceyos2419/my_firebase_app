@@ -8,6 +8,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:my_firebase_app/api/cloudFIreStore.dart';
 import 'package:my_firebase_app/api/fireStorage.dart';
 import 'package:my_firebase_app/model/character.dart';
+import 'package:my_firebase_app/model/user.dart';
 
 class Characters with ChangeNotifier {
   CloudFireStore _store = CloudFireStore('characters');
@@ -24,8 +25,8 @@ class Characters with ChangeNotifier {
     return items;
   }
 
-  Stream<QuerySnapshot> fetchCharactersAsStream() {
-    return _store.stramDataCollection();
+  Stream<QuerySnapshot> fetchCharactersAsStream(User user) {
+    return _store.stramDataCollection(user);
   }
 
   Future<Character> fetchCharacterById(String id) async {

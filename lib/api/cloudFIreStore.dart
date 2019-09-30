@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_firebase_app/model/character.dart';
+import 'package:my_firebase_app/model/user.dart';
+import 'package:my_firebase_app/provider/auth.dart';
 
 class CloudFireStore {
   final Firestore _db = Firestore.instance;
@@ -15,8 +17,11 @@ class CloudFireStore {
     return ref.getDocuments();
   }
 
-  Stream<QuerySnapshot> stramDataCollection() {
-    return ref.orderBy('rating', descending: true).snapshots();
+  Stream<QuerySnapshot> stramDataCollection(User user) {
+    return ref
+        .orderBy('rating', descending: true)
+        .where('uid', isEqualTo: user.uid)
+        .snapshots();
   }
 
   Future<DocumentSnapshot> getDocumentById(String id) {

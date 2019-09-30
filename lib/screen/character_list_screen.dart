@@ -51,8 +51,9 @@ class CharacterListScreen extends StatelessWidget {
 
   Widget _buildBody(BuildContext context) {
     final charactersProvider = Provider.of<Characters>(context);
+    final authProvider = Provider.of<Auth>(context);
     return StreamBuilder<QuerySnapshot>(
-        stream: charactersProvider.fetchCharactersAsStream(),
+        stream: charactersProvider.fetchCharactersAsStream(authProvider.user),
         builder: (context, snapshot) {
           if (!snapshot.hasData) return LinearProgressIndicator();
           return _buildList(context, snapshot.data.documents);
