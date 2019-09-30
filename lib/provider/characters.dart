@@ -11,9 +11,6 @@ import 'package:my_firebase_app/model/character.dart';
 
 class Characters with ChangeNotifier {
   CloudFireStore _store = CloudFireStore('characters');
-  // final FirebaseStorage _storage =
-  // FirebaseStorage(storageBucket: 'gs://my-firebase-app-c159a.appspot.com/');
-  // final String filePath = 'images/${DateTime.now()}.png';
 
   List<Character> _items;
 
