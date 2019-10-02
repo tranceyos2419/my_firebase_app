@@ -71,6 +71,7 @@ class Characters with ChangeNotifier {
           img: downloadUrl,
           rating: character.rating,
           uid: character.uid,
+          createdAt: character.createdAt,
           reference: character.reference);
       await _store.updateDocument(character.toJson(), ref.documentID);
     } catch (e) {
