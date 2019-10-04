@@ -47,12 +47,13 @@ class _CharacterFormScreenState extends State<CharacterFormScreen> {
       _isLoading = true;
     });
     try {
+      String uid = Provider.of<Auth>(context).user.uid;
       // if (_character.uid == null) {
       _character = Character(
           name: _character.name,
           img: _character.img,
           rating: _character.rating,
-          uid: Provider.of<Auth>(context).user.uid,
+          uid: uid,
           createdAt: new Timestamp.now(),
           reference: _character.reference);
       // }
@@ -60,7 +61,7 @@ class _CharacterFormScreenState extends State<CharacterFormScreen> {
         await Provider.of<Characters>(context).updateChracter(_character);
       } else {
         await Provider.of<Characters>(context, listen: false)
-            .addCharacter(_character);
+            .addCharacter(_character, uid);
       }
     } catch (e) {
       //TODO better error handling
