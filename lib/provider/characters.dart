@@ -53,12 +53,12 @@ class Characters with ChangeNotifier {
     return;
   }
 
-  Future addCharacter(Character character) async {
+  Future addCharacter(Character character, String uid) async {
     StorageUploadTask _uploadTask;
     File file = await getImageFromNetwork(character.img);
     DocumentReference ref = await _store.addDocument(character.toJson());
 
-    final String filePath = 'characters/${ref.documentID}.png';
+    final String filePath = '/users/$uid/characters/${ref.documentID}.png';
 
     FireStorage _storage = FireStorage(filePath);
 
@@ -71,6 +71,7 @@ class Characters with ChangeNotifier {
           img: downloadUrl,
           rating: character.rating,
           uid: character.uid,
+          createdAt: character.createdAt,
           reference: character.reference);
       await _store.updateDocument(character.toJson(), ref.documentID);
     } catch (e) {

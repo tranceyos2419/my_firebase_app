@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:my_firebase_app/model/character.dart';
 import 'package:my_firebase_app/provider/auth.dart';
@@ -46,21 +47,21 @@ class _CharacterFormScreenState extends State<CharacterFormScreen> {
       _isLoading = true;
     });
     try {
-      if (_character.uid == null) {
-        _character = Character(
-            name: _character.name,
-            img: _character.img,
-            rating: _character.rating,
-            uid: Provider.of<Auth>(context).user.uid,
-            reference: _character.reference);
-      }
+      String uid = Provider.of<Auth>(context).user.uid;
+      // if (_character.uid == null) {
+      _character = Character(
+          name: _character.name,
+          img: _character.img,
+          rating: _character.rating,
+          uid: uid,
+          createdAt: new Timestamp.now(),
+          reference: _character.reference);
+      // }
       if (_isEdit) {
-        // await Provider.of<Characters>(context, listen: false)
-        // .updateCharacterAsTransaction(_character);
         await Provider.of<Characters>(context).updateChracter(_character);
       } else {
         await Provider.of<Characters>(context, listen: false)
-            .addCharacter(_character);
+            .addCharacter(_character, uid);
       }
     } catch (e) {
       //TODO better error handling
@@ -143,6 +144,7 @@ class _CharacterFormScreenState extends State<CharacterFormScreen> {
                     img: _character.img,
                     rating: _character.rating,
                     uid: _character.uid,
+                    createdAt: _character.createdAt,
                     reference: _character.reference);
               },
             ),
@@ -171,6 +173,7 @@ class _CharacterFormScreenState extends State<CharacterFormScreen> {
                     img: value,
                     rating: _character.rating,
                     uid: _character.uid,
+                    createdAt: _character.createdAt,
                     reference: _character.reference);
               },
             ),
@@ -200,6 +203,7 @@ class _CharacterFormScreenState extends State<CharacterFormScreen> {
                     img: _character.img,
                     uid: _character.uid,
                     rating: int.parse(value),
+                    createdAt: _character.createdAt,
                     reference: _character.reference);
               },
             ),

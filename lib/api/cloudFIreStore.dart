@@ -14,7 +14,7 @@ class CloudFireStore {
   }
 
   Future<QuerySnapshot> getDataCollection() {
-    return ref.getDocuments();
+    // return ref.getDocuments();
   }
 
   Stream<QuerySnapshot> stramDataCollection(User user) {
